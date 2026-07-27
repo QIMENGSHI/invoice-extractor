@@ -1,3 +1,26 @@
+# Project Name: Invoice extractor
+
+This is an AI powered tool designed to turn any invoice to spreadsheet. 
+
+### stack
+Frontend: Next.js 16 (App Router), React 19, TypeScript 5
+
+Styling: Tailwind CSS v4, PostCSS, CSS custom properties
+
+Fonts: Geist (via next/font)
+
+Code Quality: ESLint 9 + Next.js Core Web Vitals rules
+
+Runtime / Build: Node.js + npm, Next.js build pipeline
+
+Hosting: Vercel
+
+### live URL
+https://invoice-extractor-vert.vercel.app/
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -34,3 +57,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
