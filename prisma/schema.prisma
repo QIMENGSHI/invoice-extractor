@@ -5,11 +5,45 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Document {
+  id         String      @id @default(cuid())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt //automatically updated when the record is updated
+  fileName   String
+  status     String      @default("pending") //pending, processing, completed, failed
+  extraction Extraction? //one-to-one relationship with Extraction model
+}
+
+model Extraction {
+  id            String     @id @default(cuid())
+  documentId    String     @unique
+  document      Document   @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  vendor        String?
+  invoiceNumber String?
+  invoiceDate   String?
+  currency      String?
+  subtotal      Float?
+  tax           Float?
+  total         Float?
+  lineItems     LineItem[]
+  createdAt     DateTime   @default(now())
+}
+
+model LineItem {
+  id           String     @id @default(cuid())
+  extractionId String
+  extraction   Extraction @relation(fields: [extractionId], references: [id], onDelete: Cascade)
+  description  String?
+  quantity     Float?
+  unitPrice    Float?
+  total        Float?
 }
