@@ -5,8 +5,16 @@ export default function Home() {
       <p className="text-grey-500">
         Upload an invoice, get structured data. Build in progress.
       </p>
+      <UploadForm />
     </main>
   );
 }
-
-
+// i am putting a html form in this page and let user upload PDF/PNG/JPG file.
+function UploadForm() {
+  return (
+    <form action="/api/upload" method="post" encType="multipart/form-data">
+      <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg" />
+      <button type="submit">Upload</button>
+    </form>
+  );
+}
