@@ -1,4 +1,15 @@
-export default function Home() {
+import UploadForm from "./components/UploadForm";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
+
+export default async function Home() {
+  const documents = await prisma.document.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className="text-4xl font-bold">Invoice Extractor</h1>
@@ -6,15 +17,27 @@ export default function Home() {
         Upload an invoice, get structured data. Build in progress.
       </p>
       <UploadForm />
+      <section>
+        <h2 className="mb-2 text-lg font-semibold">Documents</h2>
+        {documents.length === 0 ? (
+          <p className="text-sm text-gray-500">
+            No documents yet. Upload one above.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-2">
+            {documents.map((doc) => (
+              <li
+                key={doc.id}
+                className="flex justify-between rounded border p-3 text-sm"
+              >
+                <span>{doc.fileName}</span>
+                <span className="text-gray-500">{doc.status}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }
 // i am putting a html form in this page and let user upload PDF/PNG/JPG file.
-function UploadForm() {
-  return (
-    <form action="/api/upload" method="post" encType="multipart/form-data">
-      <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg" />
-      <button type="submit">Upload</button>
-    </form>
-  );
-}

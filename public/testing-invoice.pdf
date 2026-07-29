@@ -1,0 +1,66 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 704 >>
+stream
+BT
+/F1 12 Tf
+50 760 Td
+(INVOICE) Tj
+0 -18 Td
+(Invoice No: INV-2026-0729) Tj
+0 -18 Td
+(Date: 2026-07-29) Tj
+0 -18 Td
+(Vendor: Nordic Coffee Roasters Oy) Tj
+0 -18 Td
+(Bill To: Demo Customer Ltd) Tj
+0 -18 Td
+(-------------------------------------------) Tj
+0 -18 Td
+(1\) Coffee Beans 2kg      Qty: 2   EUR 50.00) Tj
+0 -18 Td
+(2\) Oat Milk 1L           Qty: 3   EUR 4.00) Tj
+0 -18 Td
+(3\) Paper Cups \(100\)      Qty: 1   EUR 12.00) Tj
+0 -18 Td
+(-------------------------------------------) Tj
+0 -18 Td
+(Subtotal: EUR 124.00) Tj
+0 -18 Td
+(Tax \(24%\): EUR 29.76) Tj
+0 -18 Td
+(Total: EUR 153.76) Tj
+0 -18 Td
+(Currency: EUR) Tj
+0 -18 Td
+(Payment Terms: Net 14) Tj
+0 -18 Td
+(Thank you for your business.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000995 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1065
+%%EOF
