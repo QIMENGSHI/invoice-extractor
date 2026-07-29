@@ -3,8 +3,19 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 
+type DocumentListItem = {
+  id: string;
+  fileName: string;
+  status: string;
+};
+
 export default async function Home() {
-  const documents = await prisma.document.findMany({
+  const documents: DocumentListItem[] = await prisma.document.findMany({
+    select: {
+      id: true,
+      fileName: true,
+      status: true,
+    },
     orderBy: {
       createdAt: "desc",
     },
