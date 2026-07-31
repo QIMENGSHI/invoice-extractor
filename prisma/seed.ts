@@ -5,6 +5,8 @@ async function main() {
     await prisma.document.create({
         data: {
             fileName: "sample_invoice.pdf",
+            // The sample is already extracted and has no uploaded Blob.
+            filePath: "seed://sample_invoice.pdf",
             status: "extracted",
             extraction: {
                 create: {
