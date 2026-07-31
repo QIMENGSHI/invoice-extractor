@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { extractInvoice } from "@/lib/extract";
 // The extract API route
 // this route is for loading a document and running the extraction
+// New knowledge learned: 
+// Dynamic route. the [id] folder makes id a URL parameter. Next 15+ passes the params as a Promise, so we need to await it before using it.
 
 export async function POST(
     _request: Request,

@@ -1,5 +1,6 @@
 import UploadForm from "./components/UploadForm";
 import { prisma } from "@/lib/prisma";
+import ExtractButton from "./components/ExtractButton";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 
@@ -43,6 +44,7 @@ export default async function Home() {
               >
                 <span>{doc.fileName}</span>
                 <span className="text-gray-500">{doc.status}</span>
+                <ExtractButton documentId={doc.id} />
               </li>
             ))}
           </ul>
