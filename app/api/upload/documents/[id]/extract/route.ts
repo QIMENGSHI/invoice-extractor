@@ -18,7 +18,15 @@ export async function POST(
         return NextResponse.json({ error: "Document not found" }, { status: 404 });
     }
     try {
-        const extractionData = await extractInvoice(document.filePath);
-        console.log("Extracted data")
+        const data = await extractInvoice(document.filePath);
+        console.log("Extracted invoice data:\n", JSON.stringify(data, null, 2));
+        return NextResponse.json({ message: "Invoice data extracted successfully", data }, { status: 200 });
 
+} catch (error) {
+        console.error("Error extracting invoice data:", error);
+        return NextResponse.json(
+            { error: "Failed to extract invoice data" },
+            { status: 500 },
+        );
+    }
 }
