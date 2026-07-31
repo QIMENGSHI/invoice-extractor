@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { z } from "zod";//zod is a runtime validation library. Unlike a normal TypeScript interface, it can 
+//check incoming data while your program is running. 
 
 export const invoiceSchema = z.object({
   vendor: z
