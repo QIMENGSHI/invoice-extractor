@@ -57,7 +57,7 @@ export async function POST(
               description: item.description,
               quantity: item.quantity,
               unitPrice: item.unitPrice,
-              amount: item.amount,
+              total: item.amount,
             })),
           },
         },
