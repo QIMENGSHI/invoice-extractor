@@ -21,6 +21,7 @@ model Document {
   fileName   String
   filePath   String
   status     String      @default("pending") //pending, processing, completed, failed
+  error      String? // optional field to store failure reason, when status is error
   extraction Extraction? //one-to-one relationship with Extraction model
 }
 

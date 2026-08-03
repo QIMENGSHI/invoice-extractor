@@ -43,7 +43,19 @@ export default async function Home() {
                 className="flex justify-between rounded border p-3 text-sm"
               >
                 <span>{doc.fileName}</span>
-                <span className="text-gray-500">{doc.status}</span>
+                <span
+                  className={
+                    doc.status === "extracted"
+                      ? "text-green-600"
+                      : doc.status === "error"
+                        ? "text-red-600"
+                        : doc.status === "processing"
+                          ? "text-amber-600"
+                          : "text-gray-500"
+                  }
+                >
+                  {doc.status}
+                </span>
                 <ExtractButton documentId={doc.id} />
               </li>
             ))}

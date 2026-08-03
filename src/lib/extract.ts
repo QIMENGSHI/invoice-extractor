@@ -38,6 +38,8 @@ export async function extractInvoice(fileUrl: string): Promise<InvoiceData> {
     const { object } = await generateObject({
     model: anthropic("claude-haiku-4-5-20251001"),
     schema: invoiceSchema,
+    maxRetries: 2, // retry if the model fails to produce valid output
+    abortSignal: AbortSignal.timeout(60_000), // timeout after 60 seconds
     messages: [
         {
         role: "user",

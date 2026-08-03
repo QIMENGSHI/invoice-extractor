@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ExtractButton({ documentId }: { documentId: string }) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   async function onClick() {
     setLoading(true);
     try {
@@ -13,12 +16,14 @@ export default function ExtractButton({ documentId }: { documentId: string }) {
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Failed to extract invoice data");
+      } else {
+        console.log("Extraction successful:", data);
+        router.refresh();
+        setLoading(false); // Refresh the page to show the updated document status
       }
-      console.log("Extraction successful:", data);
-      setLoading(false);
-      alert(
-        "Invoice data extracted successfully. Check the console for JSON details.",
-      );
+      
+      
+      
     } catch (error) {
       console.error("Error extracting invoice data:", error);
       setLoading(false);

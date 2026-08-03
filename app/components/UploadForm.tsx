@@ -1,6 +1,18 @@
 "use client";
 // Next.js APP Router components are server components by default. To use client-side features like state and effects, need to add the "use client" directive at the top of the file.
-
+// User selects file
+//     ↓
+// <form onSubmit={handleSubmit}>
+//     ↓ React passes the event
+// event.currentTarget gives the form
+//     ↓
+// new FormData(form) collects name="file"
+//     ↓
+// fetch sends FormData to /api/upload
+//     ↓
+// request.formData() reads it
+//     ↓
+// formData.get("file") returns the uploaded file
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -36,6 +48,7 @@ export default function UploadForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      // when the user submits the form, react creates a FormData 
       className="flex flex-col items-center space-y-4"
     >
       <input
