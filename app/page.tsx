@@ -1,6 +1,8 @@
 import UploadForm from "./components/UploadForm";
 import { prisma } from "@/lib/prisma";
 import ExtractButton from "./components/ExtractButton";
+import StatusBadge from "./components/StatusBadge";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 
@@ -43,20 +45,14 @@ export default async function Home() {
                 className="flex justify-between rounded border p-3 text-sm"
               >
                 <span>{doc.fileName}</span>
-                <span
-                  className={
-                    doc.status === "extracted"
-                      ? "text-green-600"
-                      : doc.status === "error"
-                        ? "text-red-600"
-                        : doc.status === "processing"
-                          ? "text-amber-600"
-                          : "text-gray-500"
-                  }
-                >
-                  {doc.status}
-                </span>
+                <StatusBadge status={doc.status} />
                 <ExtractButton documentId={doc.id} />
+                <Link
+                  href={`/documents/${doc.id}`}
+                  className="text-sm text-gray-500 hover:underline"
+                >
+                  {doc.fileName}
+                </Link>
               </li>
             ))}
           </ul>
