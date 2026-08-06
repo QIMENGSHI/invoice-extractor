@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import ExtractButton from "./components/ExtractButton";
 import StatusBadge from "./components/StatusBadge";
 import Link from "next/link";
+import ExtractionEditor from "./components/ExtractionEditor";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 

@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import ExtractButton from "@/app/components/ExtractButton";
+import ExtractionEditor from "@/app/components/ExtractionEditor";
 import StatusBadge from "@/app/components/StatusBadge";
-import { formatDate, formatMoney } from "@/lib/format";
-import LineItemsTable from "@/app/components/LineItemsTable";
+import { formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 
@@ -56,40 +56,8 @@ export default async function DocumentPage({
           <ExtractButton documentId={document.id} />
         </div>
       ) : (
-        <>
-          <section className="grid grid-cols-2 gap-4 rounded border p-4 text-sm">
-            <Field label="Vendor" value={extraction.vendor} />
-            <Field label="Invoice #" value={extraction.invoiceNumber} />
-            <Field label="Date" value={formatDate(extraction.invoiceDate)} />
-            <Field label="Currency" value={extraction.currency} />
-            <Field
-              label="Subtotal"
-              value={formatMoney(extraction.subtotal, extraction.currency)}
-            />
-            <Field
-              label="Tax"
-              value={formatMoney(extraction.tax, extraction.currency)}
-            />
-            <Field
-              label="Total"
-              value={formatMoney(extraction.total, extraction.currency)}
-            />
-          </section>
-          <section>
-              <h2 className="mb-2 text-lg font-semibold">Line Items</h2>
-              <LineItemsTable items={extraction.lineItems} currency={extraction.currency} />
-          </section>
-        </>
+        <ExtractionEditor documentId={document.id} extraction={extraction} />
       )}
     </main>
-  );
-}
-
-function Field({ label, value }: { label: string; value: string | null }) {
-  return (
-    <div>
-      <p className="text-gray-500">{label}</p>
-      <p className="font-medium">{value ?? "—"}</p>
-    </div>
   );
 }
