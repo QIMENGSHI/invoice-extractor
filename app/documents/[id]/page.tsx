@@ -67,6 +67,12 @@ export default async function DocumentPage({
           >
             Download CSV
           </a>
+          <a
+            href={`/api/upload/documents/${document.id}/export-xlsx`}
+            className="rounded border px-3 py-1 text-sm hover:bg-gray-50"
+          >
+            Download XLSX
+          </a>
         </div>
       )}
     </main>
