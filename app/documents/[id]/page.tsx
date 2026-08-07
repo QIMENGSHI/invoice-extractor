@@ -58,6 +58,17 @@ export default async function DocumentPage({
       ) : (
         <ExtractionEditor documentId={document.id} extraction={extraction} />
       )}
+
+      {document.status === "extracted" && (
+        <div className="flex gap-2">
+          <a
+            href={`/api/upload/documents/${document.id}/export`}
+            className="rounded border px-3 py-1 text-sm hover:bg-gray-50"
+          >
+            Download CSV
+          </a>
+        </div>
+      )}
     </main>
   );
 }
