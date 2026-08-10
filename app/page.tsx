@@ -20,6 +20,27 @@ type DocumentListItem = {
   } | null;
 };
 
+const STATUSES = [
+  "all",
+  "pending",
+  "processing",
+  "completed",
+  "error",
+] as const;
+function buildQueryString(options: {
+  q: string;
+  status: string;
+  page?: number;
+}) {
+  const sp = new URLSearchParams();
+  if (options.q) sp.set("q", options.q);
+  if (options.status && options.status !== "all")
+    sp.set("status", options.status);
+  if (options.page && options.page > 1) sp.set("page", String(options.page));
+  const s = sp.toString();
+  return s ? `?${s}` : "/";
+}
+
 export default async function Home({
   searchParams,
 }: {
@@ -99,44 +120,61 @@ export default async function Home({
               : "No documents yet. Upload one above."}
           </p>
         ) : (
-          <table className="w-full border-collspse text-sm">
-            <thead>
-              <tr className="border-b text-left text-gray-500">
-                <th className="py-2">File</th>
-                <th className="py-2">Vendor</th>
-                <th className="py-2">Total</th>
-                <th className="py-2">Uploaded</th>
-                <th className="py-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {documents.map((doc) => (
-                <tr key={doc.id} className="border-b">
-                  <td className="py-2">
-                    <Link
-                      href={`/documents/${doc.id}`}
-                      className="text-sm text-gray-500 hover:underline"
-                    >
-                      {doc.fileName}
-                    </Link>
-                  </td>
-                  <td className="py-2">{doc.extraction?.vendor ?? "-"}</td>
-                  <td className="py-2 text-right">
-                    {formatMoney(
-                      doc.extraction?.total ?? null,
-                      doc.extraction?.currency ?? null,
-                    ) ?? "—"}
-                  </td>
-                  <td className="py-2">
-                    {formatDate(doc.createdAt.toISOString())}
-                  </td>
-                  <td className="py-2">
-                    <StatusBadge status={doc.status} />
-                  </td>
-                </tr>
+          <>
+            <div className="flex gap-3 text-sm">
+              {STATUSES.map((st) => (
+                <Link
+                  key={st}
+                  href={buildQueryString({ q, status: st})}
+                  className={
+                    status === st
+                      ? "font-semibold underline"
+                      : "text-gray-500 hover:underline"
+                  }
+                >
+                  {st}
+                </Link>
               ))}
-            </tbody>
-          </table>
+            </div>
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b text-left text-gray-500">
+                  <th className="py-2">File</th>
+                  <th className="py-2">Vendor</th>
+                  <th className="py-2">Total</th>
+                  <th className="py-2">Uploaded</th>
+                  <th className="py-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {documents.map((doc) => (
+                  <tr key={doc.id} className="border-b">
+                    <td className="py-2">
+                      <Link
+                        href={`/documents/${doc.id}`}
+                        className="text-sm text-gray-500 hover:underline"
+                      >
+                        {doc.fileName}
+                      </Link>
+                    </td>
+                    <td className="py-2">{doc.extraction?.vendor ?? "-"}</td>
+                    <td className="py-2 text-right">
+                      {formatMoney(
+                        doc.extraction?.total ?? null,
+                        doc.extraction?.currency ?? null,
+                      ) ?? "—"}
+                    </td>
+                    <td className="py-2">
+                      {formatDate(doc.createdAt.toISOString())}
+                    </td>
+                    <td className="py-2">
+                      <StatusBadge status={doc.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
           // <ul className="flex flex-col gap-2">
           //   {documents.map((doc) => (
           //     <li
