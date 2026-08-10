@@ -13,7 +13,28 @@ type DocumentListItem = {
   status: string;
 };
 
-export default async function Home() {
+export default async function Home({
+  searchParams,}: {
+    searchParams: Promise<{ q?: string; status?: string; page?: string }>;
+    // it is equivalent to 
+    // type HomeProps = {
+    //   searchParams: Promise<{
+    //     q?: string;
+    //     status?: string;
+    //     page?: string;
+    //   }>;
+    // };
+
+    // export default async function Home(props: HomeProps) {
+    //   const searchParams = props.searchParams;
+    // }
+
+}) {
+  const sp = await searchParams;
+  const q = sp.q?.trim() || "";
+  const status = sp.status || "all";
+  const page = Math.max(1, Number(sp.page || 1) || 1);
+
   const documents: DocumentListItem[] = await prisma.document.findMany({
     select: {
       id: true,
