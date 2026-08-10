@@ -1,5 +1,6 @@
 import UploadForm from "./components/UploadForm";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import ExtractButton from "./components/ExtractButton";
 import StatusBadge from "./components/StatusBadge";
 import Link from "next/link";
@@ -34,17 +35,38 @@ export default async function Home({
   const q = sp.q?.trim() || "";
   const status = sp.status || "all";
   const page = Math.max(1, Number(sp.page || 1) || 1);
+  const PAGE_SIZE = 5;
+  const where: Prisma.DocumentWhereInput = {};
+      // Here the imported {Prisma} It describes the types of the Prisma client, including the types of the models and their fields.
+  if (q) {
+    // checks whether q contains a non empty value
+    where.OR = [
+      { fileName: { contains: q, mode: "insensitive" } },
+      { extraction: { vendor: { contains: q, mode: "insensitive" } } },
+    ];
+  }
 
-  const documents: DocumentListItem[] = await prisma.document.findMany({
-    select: {
-      id: true,
-      fileName: true,
-      status: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  
+
+
+  const [documents, total] = await Promise.all([
+    prisma.document.findMany({
+      where,
+      select: {
+        id: true,
+        fileName: true,
+        status: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+    }),
+    prisma.document.count({ where }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
