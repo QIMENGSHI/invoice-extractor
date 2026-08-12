@@ -125,7 +125,7 @@ export default async function Home({
               {STATUSES.map((st) => (
                 <Link
                   key={st}
-                  href={buildQueryString({ q, status: st})}
+                  href={buildQueryString({ q, status: st })}
                   className={
                     status === st
                       ? "font-semibold underline"
@@ -174,6 +174,33 @@ export default async function Home({
                 ))}
               </tbody>
             </table>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between text-sm">
+                {page > 1 ? (
+                  <Link
+                    href={buildQueryString({ q, status, page: page - 1 })}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Previous
+                  </Link>
+                ) : (
+                  <span className="text-gray-500">Previous</span>
+                )}
+                <span className="text-gray-500">
+                  Page {page} of {totalPages}
+                </span>
+                {page < totalPages ? (
+                  <Link
+                    href={buildQueryString({ q, status, page: page + 1 })}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Next
+                  </Link>
+                ) : (
+                  <span className="text-gray-500">Next</span>
+                )}
+              </div>
+            )}
           </>
           // <ul className="flex flex-col gap-2">
           //   {documents.map((doc) => (
