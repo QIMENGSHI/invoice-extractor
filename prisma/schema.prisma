@@ -16,6 +16,7 @@ datasource db {
 
 model Document {
   id         String      @id @default(cuid())
+  userId     String?
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt //automatically updated when the record is updated
   fileName   String
@@ -23,6 +24,8 @@ model Document {
   status     String      @default("pending") //pending, processing, completed, failed
   error      String? // optional field to store failure reason, when status is error
   extraction Extraction? //one-to-one relationship with Extraction model
+
+  @@index([userId])
 }
 
 model Extraction {

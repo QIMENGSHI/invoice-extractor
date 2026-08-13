@@ -1,8 +1,9 @@
-// here i am building the server side workhorse, it receive the file, validate it, stores it, and write the DB row.
+// this is the server side workhorse, it receive the file, validate it, stores it, and write the DB row.
 
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { put } from "@vercel/blob";
+import { auth } from "@clerk/nextjs/server";
 
 const ALLOWED_TYPES = ["application/pdf", "image/png", "image/jpeg"];
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
@@ -11,6 +12,14 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "Unauthorized: User not authenticated" },
+        { status: 401 },
+      );
+    }
 
     // validate presense and type of the file
     if (!file || !(file instanceof File)) {
@@ -38,6 +47,7 @@ export async function POST(request: Request) {
     // write the DB row
     const document = await prisma.document.create({
       data: {
+        userId,
         fileName: file.name,
         filePath: blob.url,
         status: "pending",
