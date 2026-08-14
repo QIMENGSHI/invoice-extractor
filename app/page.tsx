@@ -6,6 +6,7 @@ import StatusBadge from "./components/StatusBadge";
 import Link from "next/link";
 import { formatMoney, formatDate } from "@/lib/format";
 import ExtractionEditor from "./components/ExtractionEditor";
+import { auth } from "@clerk/nextjs/server";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 
@@ -59,11 +60,12 @@ export default async function Home({
   // }
 }) {
   const sp = await searchParams;
+  const { userId } = await auth();
   const q = sp.q?.trim() || "";
   const status = sp.status || "all";
   const page = Math.max(1, Number(sp.page || 1) || 1);
   const PAGE_SIZE = 5;
-  const where: Prisma.DocumentWhereInput = {};
+  const where: Prisma.DocumentWhereInput = {userId: userId ?? ""};
   // Here the imported {Prisma} It describes the types of the Prisma client, including the types of the models and their fields.
   if (status !== "all") {
     where.status = status;
