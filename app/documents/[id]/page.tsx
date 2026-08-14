@@ -7,7 +7,6 @@ import ExtractionEditor from "@/app/components/ExtractionEditor";
 import StatusBadge from "@/app/components/StatusBadge";
 import { formatDate } from "@/lib/format";
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic"; // this page is dynamic, because we want to show the latest uploaded files.
 
@@ -17,10 +16,13 @@ export default async function DocumentPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const document = await prisma.document.findUnique({
-    where: { id },
+  const { userId } = await auth.protect();
+
+  const document = await prisma.document.findFirst({
+    where: {
+      id,
+      userId, // Ensure the document belongs to the authenticated user
+    },
     include: {
       extraction: {
         include: {
@@ -30,7 +32,7 @@ export default async function DocumentPage({
     },
   });
   if (!document || document.userId !== userId) {
-    return NextResponse.json({ error: "Document not found" }, { status: 404 });
+    notFound();
   }
   const { extraction } = document;
 
