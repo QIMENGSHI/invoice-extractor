@@ -65,7 +65,7 @@ export default async function Home({
   const status = sp.status || "all";
   const page = Math.max(1, Number(sp.page || 1) || 1);
   const PAGE_SIZE = 5;
-  const where: Prisma.DocumentWhereInput = {userId: userId ?? ""};
+  const where: Prisma.DocumentWhereInput = { userId: userId ?? "" };
   // Here the imported {Prisma} It describes the types of the Prisma client, including the types of the models and their fields.
   if (status !== "all") {
     where.status = status;
@@ -115,6 +115,11 @@ export default async function Home({
       <UploadForm />
       <section>
         <h2 className="mb-2 text-lg font-semibold">Documents</h2>
+        {(q || status !== "all") && (
+          <Link href="/" className="text-sm text-gray-500 hover:underline">
+            ← Back to all documents
+          </Link>
+        )}
         {documents.length === 0 ? (
           <p className="text-sm text-gray-500">
             {q || status !== "all"
